@@ -8,9 +8,9 @@ $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
 
 $config['db']['host']   = "localhost";
-$config['db']['user']   = "user";
-$config['db']['pass']   = "password";
-$config['db']['dbname'] = "exampleapp";
+$config['db']['user']   = "root";
+$config['db']['pass']   = "";
+$config['db']['dbname'] = "slimtest";
 
 
 $app = new \Slim\App(['settings' => $config]);
@@ -43,8 +43,9 @@ $container['db'] = function ($c) {
 
 $app->get('/hello/{name}', function (Request $request, Response $response) {
     $name = $request->getAttribute('name');
+    $sql = "INSERT INTO greetedNames (name) VALUES ('$name')";
+    $this->db->query($sql);
     $response->getBody()->write("Hello, $name");
-
     return $response;
 })->setName('hello');
 
