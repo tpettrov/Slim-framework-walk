@@ -51,6 +51,10 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
 
 $app->get('/', function (Request $request, Response $response) {
     $this->logger->addInfo("Home loaded.");
+    $statement = $this->db->prepare("SELECT name FROM greetedNames");
+    $statement->execute();
+    $result = $statement->fetchAll(PDO::FETCH_COLUMN);
+    print_r($result);
     $response->getBody()->write("Hello. This is home.");
     return $response;
 })->setName('home');
