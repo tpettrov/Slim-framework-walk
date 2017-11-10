@@ -12,7 +12,7 @@ class stopNonAnton
 
     public function __invoke(Request $request, Response $response, $next)
     {
-        $response->getBody()->write('BEFORE');
+        $response->getBody()->write('Now checking your name in middleware! ');
         $path = $request->getUri()->getPath();
 
         if (substr($path, -5) != 'anton') {
@@ -20,7 +20,7 @@ class stopNonAnton
             $response = $response->withStatus(404);
         } else {
             $response = $next($request, $response);
-            $response->getBody()->write('AFTER');
+            $response->getBody()->write('Putting the route in middleware. This is to confirm that middleware check passed.');
         }
 
         return $response;
