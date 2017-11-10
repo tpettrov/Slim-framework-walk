@@ -2,6 +2,8 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
+require 'stopNonAnton.php';
+
 require '../vendor/autoload.php';
 
 $config['displayErrorDetails'] = true;
@@ -15,6 +17,7 @@ $config['db']['dbname'] = "slimtest";
 
 $app = new \Slim\App(['settings' => $config]);
 $container = $app->getContainer();
+
 
 //add logger to the dependency injection controller
 
@@ -45,9 +48,10 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
     $name = $request->getAttribute('name');
     $sql = "INSERT INTO greetedNames (name) VALUES ('$name')";
     $this->db->query($sql);
-    $response->getBody()->write("Hello, $name");
+    $response->getBody()->write("Ohh Hello, $name, I can only greet you my master!");
     return $response;
-})->setName('hello');
+})->add(new stopNonAnton());
+
 
 $app->get('/', function (Request $request, Response $response) {
     $this->logger->addInfo("Home loaded.");
